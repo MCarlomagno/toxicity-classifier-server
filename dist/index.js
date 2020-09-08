@@ -26,9 +26,9 @@ app.get("/twits/:username/:count", (req, res) => __awaiter(void 0, void 0, void 
     let tweets = [];
     let response;
     try {
-        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${username}&count=${count}`, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
+        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&include_rts=false&exclude_replies=true&screen_name=${username}&count=${count}`, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
         const json = yield response.json();
-        tweets = json.map(tweet => tweet.text);
+        tweets = json.map(tweet => tweet.full_text);
     }
     catch (e) {
         // tslint:disable-next-line: no-console
@@ -43,8 +43,6 @@ app.get("/twits/:username/:count", (req, res) => __awaiter(void 0, void 0, void 
         success: true,
         body: tweets,
     };
-    // tslint:disable-next-line: no-console
-    console.log(result);
     res.status(200).json(result);
 }));
 // start the Express server
