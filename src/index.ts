@@ -14,13 +14,20 @@ app.get("/twits/:username/:count", async (req, res) => {
     let tweets = [];
     let response;
     try {
-        response = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&include_rts=false&exclude_replies=true&screen_name=${username}&count=${count}`,
+        // fetchs tweets from api
+        response = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&include_rts=true&exclude_replies=false&screen_name=${username}&count=${count}`,
             { headers: { 'Authorization': `Bearer ${TOKEN}` } });
-
 
         const json = await response.json() as any[];
 
-        tweets = json.map(tweet => tweet.full_text);
+        tweets = json.map(tweet => {
+            // if is retwit
+            if(tweet.retweeted_status) {
+                return tweet.retweeted_status.full_text;
+            } else {
+                return tweet.full_text;
+            }
+        } );
     } catch (e) {
         // tslint:disable-next-line: no-console
         console.log(e);

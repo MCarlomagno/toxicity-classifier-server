@@ -17,7 +17,7 @@ const node_fetch_1 = __importDefault(require("node-fetch"));
 const cors_1 = __importDefault(require("cors"));
 const app = express_1.default();
 app.use(cors_1.default());
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const TOKEN = process.env.TOKEN || '';
 // define a route handler for the default home page
 app.get("/twits/:username/:count", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,9 +26,17 @@ app.get("/twits/:username/:count", (req, res) => __awaiter(void 0, void 0, void 
     let tweets = [];
     let response;
     try {
-        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&include_rts=false&exclude_replies=true&screen_name=${username}&count=${count}`, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
+        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&include_rts=true&exclude_replies=false&screen_name=${username}&count=${count}`, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
         const json = yield response.json();
-        tweets = json.map(tweet => tweet.full_text);
+        tweets = json.map(tweet => {
+            // if is retwit
+            if (tweet.retweeted_status) {
+                return tweet.retweeted_status.full_text;
+            }
+            else {
+                return tweet.full_text;
+            }
+        });
     }
     catch (e) {
         // tslint:disable-next-line: no-console
