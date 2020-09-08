@@ -11,8 +11,6 @@ app.get("/twits/:username/:count", async (req, res) => {
 
     const username = req.params.username;
     const count = req.params.count;
-
-
     let tweets = [];
     let response;
     try {
@@ -36,9 +34,6 @@ app.get("/twits/:username/:count", async (req, res) => {
         success: true,
         body: tweets,
     };
-
-    // tslint:disable-next-line: no-console
-    console.log(result);
     res.status(200).json(result);
 });
 
