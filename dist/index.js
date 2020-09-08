@@ -26,7 +26,7 @@ app.get("/twits/:username/:count", (req, res) => __awaiter(void 0, void 0, void 
     let tweets = [];
     let response;
     try {
-        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${username}&count=${count}`, { headers: { 'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAGDqHQEAAAAAYi1o9gOPPO2Y8Fs0pX%2Ffi42OCeM%3DphqPgevTq5soHfdicIlI56tux7jd6MgABJtMGkQs1u5ZD6ZECN' } });
+        response = yield node_fetch_1.default(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${username}&count=${count}`, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
         const json = yield response.json();
         tweets = json.map(tweet => tweet.text);
     }

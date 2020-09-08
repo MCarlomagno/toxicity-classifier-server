@@ -17,7 +17,7 @@ app.get("/twits/:username/:count", async (req, res) => {
     let response;
     try {
         response = await fetch(`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${username}&count=${count}`,
-            { headers: { 'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAGDqHQEAAAAAYi1o9gOPPO2Y8Fs0pX%2Ffi42OCeM%3DphqPgevTq5soHfdicIlI56tux7jd6MgABJtMGkQs1u5ZD6ZECN' } });
+            { headers: { 'Authorization': `Bearer ${TOKEN}` } });
 
 
         const json = await response.json() as any[];
